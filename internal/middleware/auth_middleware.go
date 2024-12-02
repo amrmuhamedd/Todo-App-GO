@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -11,22 +12,15 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
-			c.Abort()
-			return
-		}
-
-		// Check if the header starts with "Bearer "
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
+		token, err := extractBearerToken(authHeader)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			c.Abort()
 			return
 		}
 
 		// Validate the token
-		userID, err := auth.ValidateToken(parts[1])
+		userID, err := auth.ValidateToken(token)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			c.Abort()
@@ -37,4 +31,17 @@ func AuthMiddleware() gin.HandlerFunc {
 		c.Set("userID", userID)
 		c.Next()
 	}
+}
+
+func extractBearerToken(authHeader string) (string, error) {
+	if authHeader == "" {
+		return "", fmt.Errorf("authorization header is empty")
+	}
+
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", fmt.Errorf("invalid authorization header format")
+	}
+
+	return parts[1], nil
 }

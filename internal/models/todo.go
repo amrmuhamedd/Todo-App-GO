@@ -10,4 +10,5 @@ type Todo struct {
 	Description string `json:"description" example:"Study Go programming language"`
 	Completed   bool   `json:"completed" example:"false"`
 	UserID      uint   `json:"user_id" example:"1"`
+	User        User   `json:"user" gorm:"foreignKey:UserID"`
 }

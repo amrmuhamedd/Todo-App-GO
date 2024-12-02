@@ -22,6 +22,10 @@ type Claims struct {
 }
 
 func GenerateToken(userID uint) (string, error) {
+	if userID == 0 {
+		return "", errors.New("invalid user ID")
+	}
+
 	claims := &Claims{
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{

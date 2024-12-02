@@ -107,6 +107,37 @@ go test ./...
 go build -o todo-api
 ```
 
+## Testing
+
+### Running Tests
+```bash
+# Run all tests
+go test ./...
+
+# Run tests with coverage
+go test -cover ./...
+
+# Run tests for a specific package
+go test ./internal/handlers
+go test ./internal/auth
+go test ./internal/middleware
+```
+
+### Test Structure
+- `internal/test/test_helpers.go`: Common testing utilities and mock functions
+- `internal/auth/jwt_test.go`: JWT token generation and validation tests
+- `internal/handlers/auth_handler_test.go`: Authentication endpoint tests
+- `internal/handlers/todo_handler_test.go`: Todo CRUD operation tests
+- `internal/middleware/auth_middleware_test.go`: Authentication middleware tests
+
+### Test Coverage
+The test suite covers:
+- JWT token generation and validation
+- User authentication (signup/login)
+- Todo CRUD operations
+- Authentication middleware
+- Error handling and edge cases
+
 ## API Endpoints
 
 ### Authentication
