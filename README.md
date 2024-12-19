@@ -2,6 +2,8 @@
 
 A RESTful API for managing todos with user authentication built using Go and modern web technologies.
 
+![screencapture-localhost-8080-swagger-index-html-2024-12-19-02_12_46](https://github.com/user-attachments/assets/6398ae3a-1fa8-49bd-9d0d-e51b2ca873c6)
+
 ## Technology Stack
 
 - **Go** - Main programming language
